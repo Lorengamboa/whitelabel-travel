@@ -2,6 +2,9 @@ import {
   SignInScreen,
   SignUpScreen,
   DashboardScreen,
+  CustomerDetailsScreen,
+  CustomersScreen,
+  UsersScreen,
 } from '../screens';
 
 const routes = [
@@ -19,6 +22,21 @@ const routes = [
     path: 'register',
     isPrivate: false,
     component: SignUpScreen,
+  },
+  {
+    path: 'users',
+    isPrivate: true,
+    component: UsersScreen,
+  },
+  {
+    path: 'customers',
+    isPrivate: true,
+    component: CustomersScreen,
+  },
+  {
+    path: 'customer/:id',
+    isPrivate: true,
+    component: CustomerDetailsScreen,
   },
 ];
 

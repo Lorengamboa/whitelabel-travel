@@ -17,6 +17,9 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPost, "/users/register", app.registerUserHandler)
 	router.HandlerFunc(http.MethodPost, "/users/login", app.loginUserHandler)
 	router.HandlerFunc(http.MethodGet, "/users", app.getUsersHandler)
+	router.HandlerFunc(http.MethodGet, "/customers", app.getCustomersHandler)
+	router.HandlerFunc(http.MethodGet, "/customers/:id", app.getCustomerHandler)
+
 	// Metrics
 	router.Handler(http.MethodGet, "/metrics/", app.authenticateAndAuthorize(expvar.Handler()))
 

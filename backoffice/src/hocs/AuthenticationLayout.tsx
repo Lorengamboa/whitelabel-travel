@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router";
 import useAuthStore from "@/store/useAuthStore";
+import { HeaderElementLayout } from '@/containers';
 
 const AuthenticationLayout: React.FC = () => {
 
@@ -11,7 +12,7 @@ const AuthenticationLayout: React.FC = () => {
       <Navigate to="/login" state={{ from: location }} replace />
     )
   }
-  return <Outlet />;
+  return <HeaderElementLayout><Outlet /></HeaderElementLayout>;
 }
 
 

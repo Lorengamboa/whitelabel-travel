@@ -3,6 +3,7 @@ const endpoints = {
     users: '/users',
     login: '/users/login',
     register: '/users/register',
+    customers: '/customers',
   },
 };
 
