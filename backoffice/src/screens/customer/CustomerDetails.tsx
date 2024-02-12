@@ -9,6 +9,7 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+
 import { useGetCustomerQuery } from '@/services/queries/customer.query';
 
 
@@ -52,7 +53,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const CustomerDetails = () => {
   const { id } = useParams();
   const { data: customer = {} } = useGetCustomerQuery(id);
-  console.log(customer, id);
+
   return (
     <Grid container spacing={4}>
       <Grid container item xs={12} columnSpacing={{ xs: 2 }}>

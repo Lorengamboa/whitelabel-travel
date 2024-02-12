@@ -62,3 +62,23 @@ func (um CustomerModel) Get(id *uuid.UUID) (*Customer, error) {
 
 	return &customer, nil
 }
+
+// Insert adds a new customer to the database
+func (um CustomerModel) Insert(customer *Customer) (*uuid.UUID, error) {
+	query := `
+		INSERT INTO 
+			customers (name, email, address, phone_number, logo, url, date_joined)
+		VALUES 
+			($1, $2, $3, $4, $5, $6, $7)
+		RETURNING 
+			id
+	`
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	err := um.DB.QueryRowContext(ctx, query, customer.Name, customer.Email, customer.Address, customer.PhoneNumber, customer.Logo, customer.URL, customer.DateJoined).Scan(&customer.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &customer.ID, nil
+}

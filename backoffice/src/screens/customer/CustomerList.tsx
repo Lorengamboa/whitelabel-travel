@@ -30,7 +30,7 @@ function CustomerList(props) {
             <TableRow
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              onClick={() => navigate(`/customer/${row.id}`)}
+              onClick={() => navigate(`/customers/${row.id}`)}
             >
               <TableCell component="th" scope="row">
                 {row.id}

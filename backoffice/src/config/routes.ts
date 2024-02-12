@@ -5,6 +5,7 @@ import {
   CustomerDetailsScreen,
   CustomersScreen,
   UsersScreen,
+  CreateCustomerFormScreen,
 } from '../screens';
 
 const routes = [
@@ -34,9 +35,14 @@ const routes = [
     component: CustomersScreen,
   },
   {
-    path: 'customer/:id',
+    path: 'customers/:id',
     isPrivate: true,
     component: CustomerDetailsScreen,
+  },
+  {
+    path: 'customers/new',
+    isPrivate: true,
+    component: CreateCustomerFormScreen,
   },
 ];
 

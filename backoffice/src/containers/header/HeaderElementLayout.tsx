@@ -36,7 +36,6 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const defaultTheme = createTheme();
 
 const HeadereElementLayout = (props) => {
   const [open, setOpen] = React.useState(true);
@@ -78,29 +77,27 @@ const HeadereElementLayout = (props) => {
           </Typography>
         </Toolbar>
 
-        <ThemeProvider theme={defaultTheme}>
-          <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            {/* MAIN CONTENT */}
-            <Box
-              component="main"
-              sx={{
-                backgroundColor: (theme) =>
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[100]
-                    : theme.palette.grey[900],
-                flexGrow: 1,
-                height: '100vh',
-                overflow: 'auto',
-              }}
-            >
+        <Box sx={{ display: 'flex' }}>
+          <CssBaseline />
+          {/* MAIN CONTENT */}
+          <Box
+            component="main"
+            sx={{
+              backgroundColor: (theme) =>
+                theme.palette.mode === 'light'
+                  ? theme.palette.grey[100]
+                  : theme.palette.grey[900],
+              flexGrow: 1,
+              height: '100vh',
+              overflow: 'auto',
+            }}
+          >
 
-              <Container maxWidth="lg" sx={{ mt: 12, mb: 4 }}>
-                {props.children}
-              </Container>
-            </Box>
+            <Container maxWidth="lg" sx={{ mt: 12, mb: 4 }}>
+              {props.children}
+            </Container>
           </Box>
-        </ThemeProvider>
+        </Box>
       </AppBar>
     </>
   );
