@@ -1,4 +1,7 @@
 export type CustomerFormErrorProps = {
+  logo?: {
+    message?: string;
+  };
   name?: {
     message?: string;
   };

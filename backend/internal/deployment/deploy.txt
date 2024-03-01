@@ -1,0 +1,160 @@
+// package deployment
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"os"
+// 	"v0/internal/data"
+
+// 	"github.com/docker/docker/api/types"
+// 	"github.com/docker/docker/api/types/container"
+// 	"github.com/docker/docker/client"
+// 	"github.com/docker/go-connections/nat"
+// )
+
+// // DeployClient deploys a whitelabel client site using Docker
+// func DeployClient(clientData *data.Client) error {
+// 	// Create a new Docker client
+// 	os.Setenv("DOCKER_API_VERSION", "1.41")
+
+// 	cli, err := client.NewEnvClient()
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	imageName := "whitelabel-travel-client"
+// 	containerName := "client-" + clientData.ID.String()
+// 	networkName := "network-" + clientData.ID.String()
+
+// 	// Define port bindings
+// 	portBindings := nat.PortMap{
+// 		"5173/tcp": []nat.PortBinding{
+// 			{
+// 				HostIP:   "0.0.0.0", // Bind to all interfaces on the host
+// 				HostPort: "3000",    // Map host port 3000 to container port 5173
+// 			},
+// 		},
+// 	}
+
+// 	// containers, err := cli.ContainerList(context.Background(), container.ListOptions{All: true})
+// 	// if err != nil {
+// 	// 	return err
+// 	// }
+
+// 	// for _, contenedor := range containers {
+// 	// 	if contenedor.Names[0] == "/"+containerName {
+// 	// 		if contenedor.State == "running" {
+// 	// 			fmt.Println("Container is already running")
+// 	// 			// stop container
+// 	// 			if err := cli.ContainerStop(context.Background(), contenedor.ID, container.StopOptions{}); err != nil {
+// 	// 				return err
+// 	// 			}
+
+// 	// 			if err := cli.ContainerStart(context.Background(), contenedor.ID, container.StartOptions{}); err != nil {
+// 	// 				return err
+// 	// 			}
+// 	// 			return nil
+// 	// 		}
+// 	// 		if contenedor.State == "exited" {
+// 	// 			fmt.Println("Container is already stopped")
+// 	// 			if err := cli.ContainerStart(context.Background(), contenedor.ID, container.StartOptions{}); err != nil {
+// 	// 				return err
+// 	// 			}
+// 	// 			return nil
+// 	// 		}
+// 	// 	}
+// 	// }
+
+// 	// Create a network
+// 	_, err = cli.NetworkCreate(context.Background(), networkName, types.NetworkCreate{})
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	// Define the database container name
+// 	dbName := "db-" + clientData.ID.String()
+
+// 	// Check if the database container is already running
+// 	// for _, container := range containers {
+// 	// 	for _, name := range container.Names {
+// 	// 		if name == "/"+dbName {
+// 	// 			fmt.Println("Database container is already running")
+// 	// 			return nil
+// 	// 		}
+// 	// 	}
+// 	// }
+
+// 	// Create a new container for the database
+// 	dbResp, err := cli.ContainerCreate(
+// 		context.Background(),
+// 		&container.Config{
+// 			Image: "postgres:14",
+// 			Env: []string{
+// 				"POSTGRES_USER=postgres",
+// 				"POSTGRES_PASSWORD=password",
+// 				"POSTGRES_DB=" + clientData.Name,
+// 			},
+// 		},
+// 		nil,
+// 		nil,
+// 		nil,
+// 		dbName,
+// 	)
+
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	// Connect the application container to the network
+// 	err = cli.NetworkConnect(context.Background(), networkName, dbResp.ID, nil)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	// Start the database container
+// 	if err := cli.ContainerStart(context.Background(), dbResp.ID, container.StartOptions{}); err != nil {
+// 		return err
+// 	}
+
+// 	fmt.Println("Database deployed successfully!")
+
+// 	// Create a new container for the whitelabel client site
+// 	resp, err := cli.ContainerCreate(
+// 		context.Background(),
+// 		&container.Config{
+// 			Image: imageName,
+// 			Env: []string{
+// 				"VITE_BRAND_NAME=" + clientData.Name,
+// 				"VITE_BRAND_EMAIL=" + clientData.Email,
+// 				"VITE_BRAND_TITLE=" + clientData.Title,
+// 				"VITE_BRAND_PRIMARY_COLOR=" + clientData.PrimaryColor,
+// 				"VITE_BRAND_SECONDARY_COLOR=" + clientData.SecondaryColor,
+// 			},
+// 		},
+// 		&container.HostConfig{
+// 			PortBindings: portBindings,
+// 		},
+// 		nil,
+// 		nil,
+// 		containerName,
+// 	)
+
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	// Connect the application container to the network
+// 	err = cli.NetworkConnect(context.Background(), networkName, resp.ID, nil)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	// Start the container
+// 	if err := cli.ContainerStart(context.Background(), resp.ID, container.StartOptions{}); err != nil {
+// 		return err
+// 	}
+
+// 	fmt.Println("Client site deployed successfully!")
+
+// 	return nil
+// }

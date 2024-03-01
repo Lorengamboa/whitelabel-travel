@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -53,13 +53,14 @@ const Item = styled(Paper)(({ theme }) => ({
 const CustomerDetails = () => {
   const { id } = useParams();
   const { data: customer = {} } = useGetCustomerQuery(id);
+  const navigate = useNavigate();
 
   return (
     <Grid container spacing={4}>
       <Grid container item xs={12} columnSpacing={{ xs: 2 }}>
         <Grid item xs={3}>
           <Item sx={{ height: '100%' }}>
-            <Avatar alt="Remy Sharp" src="https://placehold.co/60x60" sx={{ width: 60, height: 60 }} />
+            <Avatar alt="Remy Sharp" src={customer.logo} sx={{ width: 60, height: 60 }} />
             <Typography variant="overline" gutterBottom>
               {customer.name}
             </Typography>
@@ -98,10 +99,10 @@ const CustomerDetails = () => {
         </Item>
       </Grid>
       <Grid item xs={4}>
-        <Item>
+        <Item onClick={() => navigate('clients')}>
           <CustomerWidget
             label="Clients"
-            value="0"
+            value={customer.number_clients}
             icon={<StorefrontIcon
               sx={{ fontSize: 40 }}
             />}

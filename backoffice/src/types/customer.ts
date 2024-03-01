@@ -1,4 +1,5 @@
 export interface CustomerBody {
+  logo: string;
   firstName: string;
   lastName: string;
   email: string;

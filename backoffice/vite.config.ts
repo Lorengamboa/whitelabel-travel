@@ -24,7 +24,8 @@ export default defineConfig({
       "@/store": "/src/store",
       "@/services": "/src/services",
       "@/config": "/src/config",
-      "@/containers": "/src/containers"
+      "@/containers": "/src/containers",
+      "@/utils": "/src/utils",
     }
   }
 })

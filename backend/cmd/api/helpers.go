@@ -9,10 +9,11 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/google/uuid"
-	"github.com/julienschmidt/httprouter"
 	"v0/internal/cookies"
 	"v0/internal/data"
+
+	"github.com/google/uuid"
+	"github.com/julienschmidt/httprouter"
 )
 
 func (app *application) writeJSON(w http.ResponseWriter, status int, data interface{}, headers http.Header) error {
@@ -110,6 +111,15 @@ func (app *application) readIDParam(r *http.Request) (*uuid.UUID, error) {
 		return nil, errors.New("invalid id parameter")
 	}
 	return &id, nil
+}
+
+func (app *application) getParam(r *http.Request, paramName string) (string, error) {
+	params := httprouter.ParamsFromContext(r.Context())
+	param := params.ByName(paramName)
+	if param == "" {
+		return "", errors.New("invalid id parameter")
+	}
+	return param, nil
 }
 
 func (app *application) extractParamsFromSession(r *http.Request) (*data.UserID, *int, error) {

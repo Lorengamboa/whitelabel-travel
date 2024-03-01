@@ -6,6 +6,12 @@ import {
   CustomersScreen,
   UsersScreen,
   CreateCustomerFormScreen,
+  ClientsScreen,
+  CreateClientFormScreen,
+  ClientDetailsScreen,
+  TravelPackagesScreen,
+  CreateTravelPackageFormScreen,
+  TravelPackageDetailsScreen,
 } from '../screens';
 
 const routes = [
@@ -43,6 +49,36 @@ const routes = [
     path: 'customers/new',
     isPrivate: true,
     component: CreateCustomerFormScreen,
+  },
+  {
+    path: 'customers/:id/clients',
+    isPrivate: true,
+    component: ClientsScreen,
+  },
+  {
+    path: 'customers/:customerId/clients/:clientId',
+    isPrivate: true,
+    component: ClientDetailsScreen,
+  },
+  {
+    path: 'customers/:customerId/clients/:clientId/travel-packages',
+    isPrivate: true,
+    component: TravelPackagesScreen,
+  },
+  {
+    path: 'customers/:customerId/clients/:clientId/travel-packages/new',
+    isPrivate: true,
+    component: CreateTravelPackageFormScreen,
+  },
+  {
+    path: 'customers/:customerId/clients/:clientId/travel-packages/:travelPackageId',
+    isPrivate: true,
+    component: TravelPackageDetailsScreen,
+  },
+  {
+    path: 'customers/:id/clients/new',
+    isPrivate: true,
+    component: CreateClientFormScreen,
   },
 ];
 

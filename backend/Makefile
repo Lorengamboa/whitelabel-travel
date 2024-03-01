@@ -62,3 +62,9 @@ audit:
 build/api:
 	@echo 'Building cmd/api...'
 	go build -ldflags='-s' -o=./bin/api ./cmd/api
+	
+## build/api: build the cmd/deploy application
+.PHONY: build/deploy 
+build/deploy:
+	@echo 'Building cmd/deploy...'
+	go build -ldflags='-s' -o=./bin/deploy ./cmd/deploy

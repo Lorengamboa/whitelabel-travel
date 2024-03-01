@@ -4,6 +4,7 @@ const endpoints = {
     login: '/users/login',
     register: '/users/register',
     customers: '/customers',
+    clients: '/customers/:id/clients/:clientId',
   },
 };
 

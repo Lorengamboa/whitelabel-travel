@@ -8,7 +8,8 @@ interface AuthState {
 }
 
 export interface AuthStore extends AuthState {
-  setIsAuthenticated: (args: AuthState['isAuthenticated']) => void;
+  login: (args: AuthState['isAuthenticated']) => void;
+  logout: () => void
 }
 
 const initialState: Pick<AuthStore, keyof AuthState> = {
@@ -20,15 +21,19 @@ const useAuthStore = create(
     persist(
       (set) => ({
         ...initialState,
-        setIsAuthenticated: (isAuthenticated: boolean) => {
+        login: (isAuthenticated: boolean) => {
           set(() => ({ isAuthenticated }));
+        },
+        logout: () => {
+          set(() => ({ isAuthenticated: false }));
         },
       }),
       {
         name: 'auth-store',
         partialize: (state: AuthState) => ({ isAuthenticated: state.isAuthenticated }),
       },
-    )
+    ),
+
   ));
 
 export default useAuthStore;

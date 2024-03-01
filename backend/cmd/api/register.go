@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"v0/internal/data"
@@ -58,9 +58,9 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		}
 		return
 	}
-	
-	fmt.Print("User created with id ", userId) 
-	
+
+	fmt.Print("User created with id ", userId)
+
 	// Respond with success
 	app.successResponse(
 		w,

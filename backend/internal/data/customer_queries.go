@@ -26,6 +26,7 @@ func (um CustomerModel) GetAll() ([]*Customer, error) {
 
 	for rows.Next() {
 		var customer Customer
+
 		err := rows.Scan(&customer.ID, &customer.Email, &customer.Name, &customer.PhoneNumber, &customer.Address, &customer.Logo, &customer.URL, &customer.DateJoined)
 		if err != nil {
 			return nil, err
@@ -45,7 +46,7 @@ func (um CustomerModel) GetAll() ([]*Customer, error) {
 func (um CustomerModel) Get(id *uuid.UUID) (*Customer, error) {
 	query := `
 		SELECT 
-			c.id, c.email, c.name, c.phone_number, c.Address, c.logo, c.url, c.date_joined
+			c.id, c.logo, c.email, c.name, c.phone_number, c.Address, c.logo, c.url, c.date_joined
 		FROM 
 			customers c
 		WHERE 
@@ -55,11 +56,21 @@ func (um CustomerModel) Get(id *uuid.UUID) (*Customer, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	row := um.DB.QueryRowContext(ctx, query, id)
-	err := row.Scan(&customer.ID, &customer.Email, &customer.Name, &customer.PhoneNumber, &customer.Address, &customer.Logo, &customer.URL, &customer.DateJoined)
+	err := row.Scan(&customer.ID, &customer.Logo, &customer.Email, &customer.Name, &customer.PhoneNumber, &customer.Address, &customer.Logo, &customer.URL, &customer.DateJoined)
 	if err != nil {
 		return nil, err
 	}
 
+	var count int
+
+	// Assuming you're using sql.DB and the clients are stored in a "clients" table
+	// with a "customer_id" column
+	err = um.DB.QueryRowContext(ctx, "SELECT COUNT(*) FROM clients WHERE customer_id = $1", id).Scan(&count)
+	if err != nil {
+		return nil, err
+	}
+
+	customer.Clients = count
 	return &customer, nil
 }
 
@@ -81,4 +92,18 @@ func (um CustomerModel) Insert(customer *Customer) (*uuid.UUID, error) {
 	}
 
 	return &customer.ID, nil
+}
+
+// Delete removes a customer from the database
+func (um CustomerModel) Delete(id *uuid.UUID) error {
+	query := `
+		DELETE FROM 
+			customers
+		WHERE 
+			id = $1
+	`
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	_, err := um.DB.ExecContext(ctx, query, id)
+	return err
 }

@@ -24,7 +24,8 @@
       "@/store": ["store"],
       "@/services": ["services"],
       "@/config": ["config"],
-      "@/containers": ["containers"]
+      "@/containers": ["containers"],
+      "@/utils": ["utils"]
     }
   },
   "references": [{ "path": "./tsconfig.node.json" }],

@@ -42,8 +42,8 @@ const useCustomResolver: Resolver<LoginBody> =
 
 
 function SignIn() {
-  const { setIsAuthenticated, isAuthenticated } = useAuthStore((state) => state);
-  const { mutateAsync: login } = useLoginQuery();
+  const { login, isAuthenticated } = useAuthStore((state) => state);
+  const { mutateAsync: mutateLogin } = useLoginQuery();
   const {
     control,
     handleSubmit,
@@ -63,8 +63,8 @@ function SignIn() {
   }
 
   const onSubmit: SubmitHandler<LoginBody> = async (data) => {
-    await login(data);
-    setIsAuthenticated(true);
+    await mutateLogin(data);
+    login(true);
   };
 
 

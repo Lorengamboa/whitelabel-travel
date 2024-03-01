@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm, Resolver, Controller } from 'react-hook-form';
+import { MuiFileInput } from "mui-file-input";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -13,6 +14,10 @@ const useCustomResolver: Resolver<CustomerBody> =
   (data: CustomerBody) => {
     const REQUIRED_FIELD_MESSAGE = `This field is required`;
     const errors: CustomerFormErrorProps = {};
+
+    if (!data.logo) {
+      errors.logo = { message: REQUIRED_FIELD_MESSAGE };
+    }
 
     if (!data.name) {
       errors.name = { message: REQUIRED_FIELD_MESSAGE };
@@ -45,6 +50,7 @@ const CreateCustomerForm = () => {
     control,
   } = useForm<CustomerBody>({
     resolver: useCustomResolver, defaultValues: {
+      logo: null,
       name: "",
       phone_number: "",
       email: "",
@@ -54,17 +60,37 @@ const CreateCustomerForm = () => {
 
   const { mutate: createCustomer } = useCreateCustomerMutation();
 
-  const onSubmit = async (data) => {
-    console.log(data);
-    await createCustomer(data)
-    // Perform form submission logic here
+  const onSubmit = async (formData) => {
+    // File logo to base64
+    const reader = new FileReader();
+    reader.readAsDataURL(formData.logo);
+    reader.onload = function () {
+      const data = {
+        ...formData,
+        logo: reader.result,
+      }
+      createCustomer(data)
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{ mb: 4 }}>
         Customer creation form
       </Typography>
+      <Controller control={control} name='logo' render={({ field }) => (
+        <MuiFileInput
+          {...field}
+          itemType="file"
+          inputProps={{ accept: 'image/*' }}
+          label="Logo"
+          sx={{ mb: 4 }}
+        />
+      )} />
       <Controller control={control} name='name' render={({ field }) => (
         <TextField
           {...field}

@@ -17,13 +17,18 @@ CREATE TABLE IF NOT EXISTS customers(
 CREATE TABLE IF NOT EXISTS clients(
     id UUID NOT NULL PRIMARY KEY DEFAULT gen_random_uuid(),
     customer_id UUID NOT NULL,
+    url TEXT NULL,
+    title TEXT NOT NULL,
+    logo TEXT NOT NULL DEFAULT '',
+    primary_color TEXT NULL,
+    secondary_color TEXT NULL,
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    phone_number TEXT NOT NULL,
-    address TEXT NOT NULL,
+    address1 TEXT NOT NULL,
+    address2 TEXT NOT NULL,
+    city TEXT NOT NULL,
+    country TEXT NOT NULL,
     date_joined TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    logo TEXT NULL,
-    url TEXT NULL,
     FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
 );
 

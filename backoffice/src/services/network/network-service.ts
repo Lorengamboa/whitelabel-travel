@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+import useAuthStore from '@/store/useAuthStore';
 
 // Define the base URL for your API
 const BASE_URL = '/api';
@@ -54,13 +55,8 @@ export const del = async <T>(url: string): Promise<T> => {
 
 // Define a function to handle Axios errors
 const handleAxiosError = (error: AxiosError<ErrorResponse>): void => {
-  if (error.response) {
-    // The request was made and the server responded with a status code
-    console.error('Response Error:', error.response.data);
-    console.error('Status:', error.response.status);
-  } else if (error.request) {
-    // The request was made but no response was received
-    console.error('Request Error:', error.request);
+  if (error.response?.status === 401) {
+    useAuthStore.getState().logout();
   } else {
     // Something happened in setting up the request that triggered an Error
     console.error('Error:', error.message);

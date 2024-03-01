@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 
 import { endpoints } from '@/config/endpoints';
-import { get, post, ResponseData } from '@/services/network/network-service';
+import { get, post, del, ResponseData } from '@/services/network/network-service';
 import { CustomerBody } from '@/types/customer';
 
 // Get all customers
@@ -31,6 +31,16 @@ export const useCreateCustomerMutation = () => {
   return useMutation({
     mutationFn: async (customer: CustomerBody) => {
       const data: ResponseData = await post(endpoints.backoffice.customers, customer);
+      return data;
+    }
+  })
+}
+
+// Delete a customer
+export const useDeleteCustomerMutation = () => {
+  return useMutation({
+    mutationFn: async (customerId: string) => {
+      const data: ResponseData = await del(`${endpoints.backoffice.customers}/${customerId}`);
       return data;
     }
   })
