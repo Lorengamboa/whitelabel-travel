@@ -1,0 +1,8 @@
+services:
+  whitelabel-client-site:
+    image: whitelabel-travel-client
+    environment:
+      - VITE_CLIENT_ID=${VITE_CLIENT_ID}
+      - VITE_API_URL=${VITE_API_URL}
+    ports:
+      - '5173'
