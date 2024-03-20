@@ -9,11 +9,6 @@ import (
 
 type RoleNames string
 
-type Password struct {
-	Plaintext string
-	Hash      string
-}
-
 type Profile struct {
 	ID          uuid.UUID `json:"id"`
 	UserID      uuid.UUID `json:"user_id"`
@@ -24,7 +19,7 @@ type Profile struct {
 type User struct {
 	ID         uuid.UUID `json:"id"`
 	Email      string    `json:"email"`
-	Password   *Password `json:"_"`
+	Password   string    `json:"_"`
 	FirstName  string    `json:"first_name"`
 	LastName   string    `json:"last_name"`
 	IsActive   bool      `json:"is_active"`
@@ -40,9 +35,13 @@ const (
 
 type UserRepository interface {
 	GetById(ctx context.Context, id uuid.UUID) (*User, error)
+	GetByEmail(ctx context.Context, email string) (*User, error)
 	GetAll(ctx context.Context) ([]User, error)
+	Insert(ctx context.Context, user *User) error
 }
 type UserUsecase interface {
 	GetById(ctx context.Context, id uuid.UUID) (*User, error)
+	GetByEmail(ctx context.Context, email string) (*User, error)
 	GetAll(ctx context.Context) ([]User, error)
+	Insert(ctx context.Context, user *User) error
 }
